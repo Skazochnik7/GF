@@ -20,11 +20,16 @@
             if charData!=None:
                 charData.clearState()
                 defVals.update({"vData": charData, 
-                    "body": CharacterExView( 5, 
-                        Character(caption, color="#402313", show_two_window=True), "body"+Name ), #, ctc="ctc3", ctc_position="fixed"
+                    "body": CharacterExView( -5, 
+                        Character(caption, color="#402313", 
+                            window_right_padding=200 + style.window.left_padding if Name!="he" else style.window.left_padding, 
+                            window_left_padding=200+style.window.left_padding if Name=="he" else style.window.left_padding, 
+                            window_background="pics/textback1.png" if Name=="he" else "pics/textback2.png"), "body"+Name ), #, ctc="ctc3", ctc_position="fixed"
                     "head": CharacterExView( 8, 
                         Character(caption, color="#402313", 
-                            window_right_padding=220 if Name!="he" else 0, window_left_padding=220 if Name=="he" else 0, 
+                            window_right_padding=200 + style.window.left_padding if Name!="he" else style.window.left_padding, 
+                            window_left_padding=200+style.window.left_padding if Name=="he" else style.window.left_padding, 
+                            window_background="pics/textback1.png" if Name=="he" else "pics/textback2.png",  #, ctc="ctc3", ctc_position="fixed"
                             show_two_window=True), "head"+Name ) #, ctc="ctc3", ctc_position="fixed"
                     })
 
@@ -79,11 +84,11 @@
                         self.Face(o.replace("~",""))    
                     else:
 # Если это герой, то скрыть всех персонажей, для которых не указано отбражаться при реплике героя                        
-                        if self.Name=="hero": 
-                            for p in GetEntriesByType("Person"):
-                                if p.Name not in {"hero"}:
-                                    if p.GetValue("Visible"):
-                                        p.Visibility(p._talkingView, False, None)
+#                        if self.Name=="hero": 
+                        for p in GetEntriesByType("Person"):
+                            if p.Name not in {self.Name}:
+                                if p.GetValue("Visible"):
+                                    p.Visibility(p._talkingView, False, None)
 #                                    if "body+" not in p._talkingView:
 #                                        p.body.hideQ()
 #                                        p.SetValue("Visible", False)
@@ -152,26 +157,26 @@
         def Visibility(self, talkingView=" ", isTalking=True, transition=None):
             debug.SaveString(self.Name+" "+talkingView+" "+str(isTalking))
             self.SetValue("talkingView", talkingView)
-            if self.Name!="hero":
-                if (isTalking and ('head' in self._talkingView)) or ('head+' in self._talkingView):
-                    self.head.showQ(None, self.pos2, transition)
-                else:
-                    self.head.hideQ(transition)
-                    self.curchar=self.char
-                if (isTalking and ('body' in self._talkingView)) or ('body+' in self._talkingView):  
-                    self.body.showQ(None, self.pos, transition)
+#            if self.Name!="hero":
+            if (isTalking and ('head' in self._talkingView)) or ('head+' in self._talkingView):
+                self.head.showQ(None, self.pos2, transition)
+            else:
+                self.head.hideQ(transition)
+                self.curchar=self.char
+            if (isTalking and ('body' in self._talkingView)) or ('body+' in self._talkingView):  
+                self.body.showQ(None, self.pos, transition)
 #                    self.SetValue("Visible", True)
-                else:
-                    self.body.hideQ(transition)
+            else:
+                self.body.hideQ(transition)
 #                    self.SetValue("Visible", False)
-                    self.curchar=self.char2
+                self.curchar=self.char2
 
-                if isTalking:
-                    if len(talkingView)>1: # Если длина строки больше 1 значит она - не пробел и значит что-то теперь отображается
-                        self.SetValue("Visible", True)    
-                else:
-                    if not "+" in talkingView: # Если в строке нет плюса, значит сейчас все спрятано
-                        self.SetValue("Visible", False)
+            if isTalking:
+                if len(talkingView)>1: # Если длина строки больше 1 значит она - не пробел и значит что-то теперь отображается
+                    self.SetValue("Visible", True)    
+            else:
+                if not "+" in talkingView: # Если в строке нет плюса, значит сейчас все спрятано
+                    self.SetValue("Visible", False)
             return self
 
         def State(self, pos=None, pos2=None):
