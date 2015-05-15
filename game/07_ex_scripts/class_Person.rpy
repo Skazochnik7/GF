@@ -21,16 +21,9 @@
                 charData.clearState()
                 defVals.update({"vData": charData, 
                     "body": CharacterExView( -5, 
-                        Character(caption, color="#402313", 
-                            window_right_padding=200 + style.window.left_padding if Name!="he" else style.window.left_padding, 
-                            window_left_padding=200+style.window.left_padding if Name=="he" else style.window.left_padding, 
-                            window_background="pics/textback1.png" if Name=="he" else "pics/textback2.png"), "body"+Name ), #, ctc="ctc3", ctc_position="fixed"
+                        Character(caption, color="#402313"), "body"+Name ), #, ctc="ctc3", ctc_position="fixed"
                     "head": CharacterExView( 8, 
-                        Character(caption, color="#402313", 
-                            window_right_padding=200 + style.window.left_padding if Name!="he" else style.window.left_padding, 
-                            window_left_padding=200+style.window.left_padding if Name=="he" else style.window.left_padding, 
-                            window_background="pics/textback1.png" if Name=="he" else "pics/textback2.png",  #, ctc="ctc3", ctc_position="fixed"
-                            show_two_window=True), "head"+Name ) #, ctc="ctc3", ctc_position="fixed"
+                        Character(caption, color="#402313", show_two_window=True), "head"+Name ) #, ctc="ctc3", ctc_position="fixed"
                     })
 
                 defVals["body"].attach( charData )
@@ -44,6 +37,11 @@
 
             self.Items=RegEntry(ItemCollection("items"+Name))        # Коллекция ивентов
             self.chibi=RegEntry(Chibi("chibi"+Name))                # Чибик
+
+#            if Name=="he":
+#                self.SayWindow(1)
+#            if Name=="skaz":
+#                self.SayWindow(0)
 
             return
 
@@ -97,6 +95,14 @@
 #                                        p.SetValue("Visible", False)
                         renpy.say(self.curchar, StringFormat(o))  #
             return self
+
+        def SayWindow(self, index): # 0, 1, 2. 0 - на весь экран, 1 - дырка слева, 2 - дырка справа
+            self.char.window_args["background"]="pics/textback"+str(index)+".png"
+            self.char.window_args["right_padding"]=[style.window.right_padding, style.window.right_padding, style.window.right_padding+200][index]
+            self.char.window_args["left_padding"]=[style.window.left_padding, style.window.left_padding+200, style.window.left_padding][index]
+            return self
+
+
 
 # Смена лица персонажа
         def Face(self, s):

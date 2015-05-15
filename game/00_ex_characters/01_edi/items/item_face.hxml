@@ -4,13 +4,13 @@
 	<key>face</key>
 
 	<style name="default">
-		<frame>snape_main.png</frame>
+		<frame>default.png</frame>
 		<folder>face</folder>
 		<visible>1</visible>
 		<zorder>face</zorder>
 		<parent>head</parent>
 	</style>
-	<style name="face_01">	<frame>snape_main.png</frame></style>
+	<style name="face_01">	<frame>default.png</frame></style>
 	<style name="face_02">	<frame>snape_face_02.png</frame></style>
 	<style name="face_03">	<frame>snape_face_03.png</frame></style>
 	<style name="face_04">	<frame>snape_face_04.png</frame></style>

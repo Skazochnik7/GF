@@ -20,5 +20,12 @@ label images_init:
             spacing 10 xpos 846 ypos 11#отступ для текста, если надо прямо в левом углу — убираем его        
             text "{size=-5}12345{/size}" #сумма текстом
 
-
     return
+
+screen letterbig(par1=letter_text):
+    zorder 4
+    add "pics/scroll_w_big.png" at Position(xpos=40, ypos=30)  
+    hbox: 
+        spacing 40 xpos 150 ypos 80 xmaximum 480#отступ для текста, если надо прямо в левом углу — убираем его        
+        text par1
+
