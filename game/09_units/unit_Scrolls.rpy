@@ -1,19 +1,20 @@
 ﻿label bigletter(__pages): #Вывод скроллов с использованием меню
     $__pageIndex=0
     label letterbig_newpage:
-    $screens.Show("letterbig", par1=__pages[__pageIndex])
+    $screens.Show("letterbig", par1=__pages[__pageIndex])    
 #    $screens.Show("ctc", d3, "bld1").Pause()
-    pause
 
-    menu:
-        "<<< Вернуться " if __pageIndex>0:
-            $__pageIndex-=1                
-            jump letterbig_newpage
-        " Продолжить >>>" if __pageIndex<len(__pages)-1:
-            $__pageIndex+=1
-            jump letterbig_newpage
-        "- Завершить -":
-            pass    
+    python:
+        choose = RunMenu(0.5, 0.9)
+        if __pageIndex>0:
+            choose.AddItem("<<< Вернуться ", None, str(-1))
+        if __pageIndex<len(__pages)-1:
+            choose.AddItem(" Продолжить >>>", None, str(1)) 
+        choose.Show()
+    if choose.choice!="":
+        $__pageIndex+=int(choose.choice)
+        jump letterbig_newpage
+
     $screens.Hide("letterbig") #, "ctc", d3, "bld1")
     return
 

@@ -11,14 +11,20 @@ init python:
     class RunMenu(store.object):
         current = None
         screen = "display"
+        pos_x = 0.5
+        pos_y = 0.5
 
-        def __init__(self,
+        def __init__(self, pos_x = 0.5,
+            pos_y = 0.5,
             text=None,
             who=None,
             items=None):
 #            ,runCall=False 
     
 #            self.runCall=runCall
+            RunMenu.pos_x = pos_x
+            RunMenu.pos_y = pos_y
+
             self.choice=None
             self.Clear()
             if items!=None:
@@ -47,24 +53,23 @@ init python:
             if self.text:
                 renpy.say(self.who, self.text, interact=False)
 
-            if escLabel!=None:
-                if escText==None:
-                    escText="- Ничего -"
-                self.AddItem(escText, escLabel, "")
+#            if escLabel!=None:
+            if escText==None:
+                escText="- Выйти -"
+            self.AddItem(escText, escLabel, "")
             renpy.call_screen(RunMenu.screen)
-          
 
-        def SetCurrentMenuItem(self, sName):
+        def _SetCurrentMenuItem(self, sName):
             self.choice=sName
 
 
 
 screen display:
-    add "03_hp/11_misc/bld.png"
+    add "pics/grad_blue.png"
     window:
         style "menu_window"
-        xalign menu_x
-        yalign 0.5
+        xalign RunMenu.pos_x
+        yalign RunMenu.pos_y
 
         vbox:
             style "menu"
@@ -76,7 +81,7 @@ screen display:
 
                     button:
 # Если пытаться по нажатию кнопки сделать не jump, а call, чтобы вернуться по окончанию выполнения блока, то все срабатывает корректно, но затем, если сохранить, то сохранение не читается сохранение, оставил только механизм Jump                   
-                        action [Function(this, sName=i.objName), Function(RunMenu.current.SetCurrentMenuItem, sName=i.objName), Jump(i.label) if i.label!=None else Return()] # if not RunMenu.current.runCall else Function(renpy.call, i.label)] 
+                        action [Function(this, sName=i.objName), Function(RunMenu.current._SetCurrentMenuItem, sName=i.objName), Jump(i.label) if i.label!=None else Return()] # if not RunMenu.current.runCall else Function(renpy.call, i.label)] 
                         style "menu_choice_button"
 
                         text i.caption style "menu_choice"

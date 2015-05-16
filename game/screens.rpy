@@ -64,7 +64,7 @@ screen say:
 # http://www.renpy.org/doc/html/screen_special.html#choice
 
 screen choice:
-
+    zorder 7
     window:
         style "menu_window"
         xalign 0.5
@@ -86,6 +86,7 @@ screen choice:
 
                 else:
                     text caption style "menu_caption"
+
 
 init -2 python:
     config.narrator_menu = True

@@ -23,7 +23,8 @@ label images_init:
     return
 
 screen letterbig(par1=letter_text):
-    zorder 4
+#    add "pics/grad_blue.png"
+    zorder 9
     add "pics/scroll_w_big.png" at Position(xpos=40, ypos=30)  
     hbox: 
         spacing 40 xpos 150 ypos 80 xmaximum 480#отступ для текста, если надо прямо в левом углу — убираем его        
