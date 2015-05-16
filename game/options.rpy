@@ -97,7 +97,7 @@ init -1 python hide:
     ## левого/правого и верхнего/нижнего бордюров
     ## соответственно.
 
-    style.window.background = Frame("pics/frame2.png", 12, 12)
+    style.window.background = Frame("pics/textback0.png", 12, 12)
 
     ## Внешние поля - пространство, окружающее окно, на котором
     ## не рисуется фон.
@@ -110,8 +110,8 @@ init -1 python hide:
     ## Внутренние поля - пространство внутри окна, где
     ## рисуется фон.
 
-    # style.window.left_padding = 6
-    # style.window.right_padding = 6
+    style.window.left_padding = 24
+    style.window.right_padding = 24
     # style.window.top_padding = 6
     # style.window.bottom_padding = 6
 
@@ -143,11 +143,11 @@ init -1 python hide:
 
     ## Файл, содержащий шрифт.
 
-    # style.default.font = "DejaVuSans.ttf"
+    style.default.font = "BREEZEB.TTF"
 
     ## Размер текста по умолчанию.
 
-    # style.default.size = 22
+    style.default.size = 24
 
     ## Заметьте, что это изменит стиль лишь некоторого
     ## текста. У других кнопок свои стили.
