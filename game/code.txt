@@ -1,0 +1,11 @@
+#for items in snape.data.mItems: 
+#	snape.data.mItems[items].mSubitemsStyle = []
+#for items in daphne.data.mItems: 
+#	daphne.data.mItems[items].mSubitemsStyle = []	
+#for items in hermi.data.mItems: 
+#	hermi.data.mItems[items].mSubitemsStyle = []
+
+#__s=this.GetTime("start2",None, points={"daphne_private","daphne_public"})
+__s=event.GetValue("l")
+Say(str(__s))
+
