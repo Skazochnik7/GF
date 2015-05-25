@@ -11,19 +11,17 @@ init python:
     class RunMenu(store.object):
         current = None
         screen = "display"
-        pos_x = 0.5
-        pos_y = 0.5
+        pos_x = 0.5 
+        pos_y = 0.5 
 
-        def __init__(self, pos_x = 0.5,
-            pos_y = 0.5,
-            text=None,
-            who=None,
-            items=None):
-#            ,runCall=False 
-    
-#            self.runCall=runCall
-            RunMenu.pos_x = pos_x
-            RunMenu.pos_y = pos_y
+ 
+        def __init__(self, pos_x = 0.5, 
+            pos_y = 0.5, 
+            text=None, 
+            who=None, 
+            items=None): 
+            RunMenu.pos_x = pos_x 
+            RunMenu.pos_y = pos_y 
 
             self.choice=None
             self.Clear()
@@ -58,18 +56,20 @@ init python:
                 escText="- Выйти -"
             self.AddItem(escText, escLabel, "")
             renpy.call_screen(RunMenu.screen)
+          
 
         def _SetCurrentMenuItem(self, sName):
             self.choice=sName
 
 
 
-screen display:
-    add "pics/grad_blue.png"
-    window:
-        style "menu_window"
-        xalign RunMenu.pos_x
+screen display: 
+    add "pics/grad_blue.png" 
+    window: 
+        style "menu_window" 
+        xalign RunMenu.pos_x 
         yalign RunMenu.pos_y
+
 
         vbox:
             style "menu"
