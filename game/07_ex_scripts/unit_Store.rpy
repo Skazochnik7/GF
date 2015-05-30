@@ -88,6 +88,7 @@ init -999 python:
             arr[key].update({subkey: value})
         else:
             arr[key][subkey]=value
+        return value
 
 # Намеренно не ставлю здесь проверок на наличие соответствующего поля. Разработчик должен проверять перед вызовом с помощью функций  IsStoreKey IsStoreSubKey
     def GetArrayValue(key, subkey):

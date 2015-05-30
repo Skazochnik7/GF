@@ -70,8 +70,27 @@ init:
             constVals={"pos_door": gMakePos( 350, 0 ), "pos_doorleft": gMakePos( 300, 0 ), "pos_center": POS_140})
         )
 
+        shed_morning = None
+        shed_afternoon = None
+        shed_evening = None
+
+        if persistent.mod_disable_original_stats == False:
+        # Stats that will be shown on the "main" GUI
+            register_stat("Morale", "morale", 0, 5, 100)
+            register_stat("Behavior", "behavior", 5, 0, 100)
+            register_stat("Academics", "academics", 10, 0, 100)
+            register_stat("Artistery", "artistery", 10, 0, 100)
+            register_stat("Athletics", "athletics", 10, 0, 100)
+            register_stat("Deviance", "deviance", 0, 0, 100)
+            register_stat("Inhibition", "inhibition", 75, 100, 100)
+
 
     call images_init
+
+
+
+
+
 
 # Игра начинается здесь.
 label start:
@@ -91,7 +110,17 @@ label start:
     call start_elog
     call after_load
 
-    "хело"
+label init_day:
+    "Инициализация нового дня"
+
+    python: 
+        normalize_stats()
+
+    call day_planner(["Morning", "Afternoon", "Evening"])
+
+    "На утро получена локация [shed_morning]. Обрабатываем..."
+
+    jump init_day
 
     show image "pics/background.png"
 
@@ -225,4 +254,11 @@ label start:
 
     $he("~01// #Так, посмотрим что там такое.")
     $Say("Интересно.")
+    return
+
+
+label dp_callback:
+
+    $ display_stats()
+#    $ display_extra_stats()
     return
