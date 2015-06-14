@@ -3,15 +3,13 @@
 # Класс - обертка для словаря ивентов
     class Event(Entry):
         # constructor - Event initializing
-        def __init__( self, sFullName, scenario, points, ready, done, defVals, constVals):
-            alter=None
+        def __init__( self, sFullName, weight, scenario, points, ready, done, defVals, constVals):
             caption=None
             self.Name=sFullName
             if ":" in sFullName:
                 sp =sFullName.split(":") 
                 self.Name=sp[0]
-                alter=sp[1]
-                if len(sp)>2: caption=sp[2] 
+                if len(sp)>1: caption=sp[1] 
 
             super(Event, self).__init__(Name=self.Name, Type="Event", defVals=defVals, constVals=constVals )
 
@@ -25,10 +23,10 @@
 
             SetArrayValue(self.Name, "ready", ready) 
             SetArrayValue(self.Name, "done", done) 
-            SetArrayValue(self.Name, "alter", alter) 
             SetArrayValue(self.Name, "caption", caption) 
             SetArrayValue(self.Name, "points", points) 
             SetArrayValue(self.Name, "scenario", scenario) 
+            SetArrayValue(self.Name, "weight", weight) 
             return
 
 

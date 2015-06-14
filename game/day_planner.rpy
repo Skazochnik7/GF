@@ -65,14 +65,15 @@ init -100 python:
 
 label day_planner(periods):
     python hide:
-        dp_period("Morning", "shed_morning")
-        dp_choice("Office", "loc_office")
+        dp_period("Утро", "shed_morning")
+        dp_choice("Кабинет", "loc_office")
 
-        dp_period("Afternoon", "shed_afternoon")
-        dp_choice("Class", "loc_class",)
+        dp_period("День", "shed_afternoon")
+        dp_choice("Классы", "loc_class",)
         
-        dp_period("Evening", "shed_evening")
-        dp_choice("School grounds", "loc_school_grounds")      
+        dp_period("Вечер", "shed_evening")
+        dp_choice("Кабинет", "loc_office")
+        dp_choice("Кафе", "loc_cafe")      
 
         renpy.choice_for_skipping()
     

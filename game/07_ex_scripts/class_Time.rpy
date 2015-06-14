@@ -3,6 +3,7 @@ init -999 python:
 # Класс - работа со временем
     class Time(store.object):
         def __init__( self): # ELog:
+            self.__stamp=10000
             return
 
         def __call__( self):
@@ -24,6 +25,13 @@ init -999 python:
                 stamp=self.stamp
             return stamp-self.Day(stamp)*10000-self.Hour(stamp)*100
 
+        def AddTime(self, delta):
+            self.__min=self.__stamp=(self.Day()*24+self.Hour()*60+self.Minute())+(self.Day(delta)*24+self.Hour(delta)*60+self.Minute(delta))
+            self.__hour=self.__min//60
+            self.stamp=(self.__hour//24)*10000+(self.__hour-(self.__hour//24)*24)*100+(self.__min-(self.__hour*60))
+
+
+
         def IsPassed(self, oldstamp, interval, intervalType="h"):
             self.__min=(self.Day(self.stamp)-self.Day(oldstamp))*24*60+(self.Hour(self.stamp)-self.Hour(oldstamp))*60+(self.Minute(self.stamp)-self.Minute(oldstamp))
             if intervalType=="m":
@@ -42,7 +50,7 @@ init -999 python:
 
         
         @property
-        def stamp(self): # Можно было бы в минуты переводить, но тогда читается хуже при отладке
-            return day*10000+900+1200*(1-daytime)
+        def stamp(self): # Можно было бы в минуты переводить, но тогда визуально читается хуже при отладке
+            return self.__stamp
 
 

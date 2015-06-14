@@ -38,24 +38,25 @@
             return self
 
 # Внимание! Не проверяется на наличие в списке одноименных! Необходимо внимательно описывать секцию Init
-        def AddStep( self, sFullName, ready=None, done=None, defVals=None, constVals=None):
+        def AddStep( self, sFullName, weight=0, ready=None, done=None, defVals=None, constVals=None):
 # Необходимо делать копию, иначе скопируется просто ссылка на объект            
-            self.AddEvent(sFullName, self.scenario, self.points.copy(), ready, done, defVals, constVals)
+            self.AddEvent(sFullName, weight, self.scenario, self.points.copy(), ready, done, defVals, constVals)
 
 
 # Внимание! Не проверяется на наличие в списке одноименных! Необходимо внимательно описывать секцию Init
-        def AddEvent( self, sFullName, scenario=None, points={}, ready=None, done=None, defVals=None, constVals=None):
+        def AddEvent( self, sFullName, weight=0, scenario=None, points={}, ready=None, done=None, defVals=None, constVals=None):
             prev=None
             prevInList=None
 
             if len(self.List)>0:
                 prevInList=self.List[len(self.List)-1]
 
-            for e in self.List:
-                if e.GetValue("scenario")==scenario:
-                    prev=e
+            if scenario!=None:
+                for e in self.List:
+                    if e.GetValue("scenario")==scenario:
+                        prev=e
 
-            self.List.append(RegEntry(Event(sFullName, scenario, points, ready, done, defVals, constVals)))
+            self.List.append(RegEntry(Event(sFullName, weight, scenario, points, ready, done, defVals, constVals)))
 # Нужно ставить не max(self.List), а self.List[len(self.List)-1] , max почему-то выдает предыдущее значение    ?!
             if prev!=None: prev.next=self.List[len(self.List)-1]
             self.List[len(self.List)-1].prev=prev
@@ -66,31 +67,65 @@
 
 
 # Был ли завершен ивент (установлен флаг завершения)? Как параметр можно подать имя или альтернативное имя
-        def Has( self, sNameOrAlter):
-            for e in self.List:
-                if e.Name==sNameOrAlter or e._alter==sNameOrAlter:
-                    return e.IsDone()
-            return False
+        def Has( self, sName):
+            return self.GetCall(sName).IsDone()
 
 
 # Поскольку список ивентов создается в блоке инит, порядок следования ивентов жестко зафиксирован
 # Если несколько ивентов могут запускаться в одной и той же точке, запустится тот, который был добавлен раньше (по движении по списку запускается первый ивент, который удовлетворяет условиям)
 # Смысл сценария - связать события в одну нить. Если события в одном сенарии, последующее не может запуститься, пока не выполнено (IsDone) предыдущее.
-        def GetStep(self, point):
+        def GetSteps(self, point):
+            __arr=[]
             for e in self.List:
                  if (point in e._points) and e.IsActive() and e._scenario!=None:
-                        return e
+                    __arr.append(e)
+#                        return e
 
-            return None
+            return __arr
 
         def IsStep(self, point):
-            return self.GetStep(point) != None
+            return self.GetSteps(point) != []
 
 # Исполнить шаг (если есть готовый для исполнения)
         def RunStep(self, point):
-            e = self.GetStep(point)
-            if e!=None:
-                e.Run()
+            if self.IsStep(point):
+                __arr = self.GetSteps(point)
+                __arr1=[] # Есть вероятности исполнения, но может ни один не исполниться
+                __arr2=[] # Хотя бы один исполнится обязательно 
+                for e in __arr:
+                    if (e._weight==0):
+                        __arr2.append(e)
+                    else: 
+                        __arr1.append(e)
+
+                r=1.0 # Вероятность отрицательного исхода
+                m=0 # Сумма вероятностей положительных исходов (для нормирирования)
+                for e in __arr1:
+                    r=r*(100-e._weight)/100
+                    m+=e._weight
+
+                debug.SaveString(str(len(__arr1))+" "+str(len(__arr2))+" "+" "+str(r)+" "+str(m))
+
+                v=Rand(10000) 
+                debug.SaveString(str(v))
+                if v>(1-r)*10000:
+                    debug.SaveString(str((1-r)*10000))
+                    if __arr2!=None:
+                        __arr2[Rand(len(__arr2))-1].Run()
+                else:
+                    if __arr1!=[]:
+                        v=Rand(m)
+                        debug.SaveString(str(v))
+                        for e in __arr1:
+                            v-=e._weight
+                            debug.SaveString(str(v))
+                            if v<=0:
+                                e.Run()
+                                break
+            return
+
+
+                
 
 
         def GetTime(self, sStartFinishMode, scenario=None, points=None):
