@@ -1,7 +1,0 @@
-﻿<?xml version="1.0"?>
-
-<!-- в этом файле будут хранится пути к папкам с частями тел -->
-<folders>
-	<folder name="body">00_ex_characters/03_fri/graphics/body/</folder>
-    <folder name="face">00_ex_characters/03_fri/graphics/face/</folder>
-</folders>
